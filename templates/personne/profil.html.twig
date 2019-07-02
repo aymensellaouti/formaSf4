@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+
+    {% if personne %}
+
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                <h3 class="mb-0">{{ personne.name }} {{ personne.firstname }}</h3>
+                <div class="mb-1 text-muted">{{ personne.age }}</div>
+                <p class="card-text mb-auto">{{ personne.cin }}.</p>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <img class="rounded-circle" src="{{ asset('build/img/'~personne.path) }}" alt="{{ personne.name }} {{ personne.firstname }}">
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}
