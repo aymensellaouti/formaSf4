@@ -125,4 +125,8 @@ class PersonneController extends AbstractController
             'personne' => $personne
         ));
     }
+
+    public function addFormPersonne() {
+        return $this->render('personne/add.html.twig');
+    }
 }
