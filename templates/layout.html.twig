@@ -255,7 +255,7 @@
     </header>
 
 
-    <div class="content">
+    <div class="container">
 
 {#        <div id="slider" class="carousel slide slider">#}
 {#            <ol class="carousel-indicators">#}
@@ -396,27 +396,6 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-<script>
-    $('.owl-carousel').owlCarousel({
-        loop:true,
-        navRewind:true,
-        margin:10,
-        nav:true,
-        dots:false,
-        navText: ['<i class="la la-angle-left"></i>','<i class="la la-angle-right"></i> '],
-        responsive:{
-            0:{
-                items:1
-            },
-            600:{
-                items:3
-            },
-            1000:{
-                items:5
-            }
-        }
-    })
-</script>
 </body>
 </html>
 

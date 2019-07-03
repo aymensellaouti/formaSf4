@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        Bonjour <br>
+        Je m'appelle {{ cv.firstname }} {{ cv.name }} <br>
+        J'ai {{ cv.age }} ans <br>
+        Et je suis de la section {{ cv.section }}
+    </div>
+{% endblock %}
+
+{% block title %}
+    Cv {{ cv.firstname }} {{ cv.name }}
+{% endblock %}
+

@@ -36,6 +36,11 @@ class Formation
     private $description;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $image;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $startDate;
@@ -46,9 +51,9 @@ class Formation
     private $endDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
-    private $state;
+    private $state = 1;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluation", mappedBy="formation")

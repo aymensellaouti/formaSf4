@@ -11,9 +11,7 @@ class PersonneFixture extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        /**
-         * @param
-         */
+
         $faker = Faker\Factory::create('fr_FR');
 
         for($i = 0; $i < 6; $i++) {
