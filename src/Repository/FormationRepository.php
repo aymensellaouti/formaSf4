@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Formation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,22 +20,49 @@ class FormationRepository extends ServiceEntityRepository
         parent::__construct($registry, Formation::class);
     }
 
-    // /**
-    //  * @return Formation[] Returns an array of Formation objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+     /**
+      * @return Formation[] Returns an array of Formation objects
+      */
+        public function findByFormationState($value)
+        {
+            return $this->createQueryBuilder('f')
+                ->andWhere('f.state = :val')
+                ->setParameter('val', $value)
+                ->orderBy('f.startDate', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+        /**
+         * @param $state
+         * @return Formation[] Returns an array of Formation objects
+         */
+        public function getNotStartedFormationByState($state) {
+            $qb = $this->createQueryBuilder('f');
+            $qb = $this->getOrdredNotStartedFormation($qb);
+            return $qb->andWhere('f.state = :state')
+                      ->setParameter('state',$state)
+                      ->getQuery()
+                      ->getResult();
+        }
+
+    /**
+     * @param $state
+     * @return Formation[] Returns an array of Formation objects
+     */
+    public function getNotStartedFormation() {
+        $qb = $this->createQueryBuilder('f');
+        return $qb = $this->getOrdredNotStartedFormation($qb)
+                          ->getQuery()
+                          ->getResult();
     }
-    */
+
+        private function getOrdredNotStartedFormation(QueryBuilder $qb) {
+            return $qb->andWhere('f.startDate > :currentDate')
+                      ->setParameter('currentDate', new \DateTime())
+                      ->orderBy('f.startDate', 'DESC');
+        }
 
     /*
     public function findOneBySomeField($value): ?Formation

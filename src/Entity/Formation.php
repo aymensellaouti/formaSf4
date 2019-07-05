@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FormationRepository")
@@ -27,6 +28,7 @@ class Formation
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="saisissez une designation s'il vous plait")
      */
     private $designation;
 
@@ -38,15 +40,17 @@ class Formation
     /**
      * @ORM\Column(type="text")
      */
-    private $image;
+    private $image="";
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="veuillez insérer une date de début de votre formation")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\GreaterThanOrEqual(propertyPath="startDate")
      */
     private $endDate;
 
@@ -238,6 +242,18 @@ class Formation
         if ($this->topics->contains($topic)) {
             $this->topics->removeElement($topic);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
