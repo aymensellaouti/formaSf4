@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Formation;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;
+use App\Service\HelperService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FormationController extends AbstractController
 {
+
+    private $helperService;
+
+    public function __construct(HelperService $helperService)
+    {
+        $this->helperService = $helperService;
+    }
+
     /**
      * @Route("/", name="formation")
      */
@@ -79,18 +88,7 @@ class FormationController extends AbstractController
             /** @var UploadedFile $brochureFile */
             $monImage = $form['imageFile']->getData();
             if ($monImage) {
-                $originalFilename = pathinfo($monImage->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$monImage->guessExtension();
-                try {
-                    $monImage->move(
-                        $this->getParameter('formulaire_upload_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                $newFilename = $this->helperService->uploadFile($monImage, 'formations');
                 $formation->setImage($newFilename);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($formation);
