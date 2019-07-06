@@ -6,9 +6,11 @@ use App\Entity\Formation;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;
 use App\Service\HelperService;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -77,6 +79,7 @@ class FormationController extends AbstractController
      * @Route("/add", name="formation.add")
      */
     public function addFormation(Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $formation = new Formation();
         $form = $this->createForm(FormationType::class, $formation)
                      ->remove('state')
@@ -148,11 +151,12 @@ class FormationController extends AbstractController
     /**
      * @param Formation|null $formation
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/detail/{id}",name="formation.details")
+     * @Route("/detail/{id}/{fiche?0}",name="formation.details")
      */
-    public function showFormation(Formation $formation = null) {
+    public function showFormation(Formation $formation = null, $fiche) {
         if ($formation) {
-            return $this->render('formation/formation.html.twig', array(
+            $fiche?$view = 'formation/formation_fiche.html.twig':$view = 'formation/formation.html.twig';
+            return $this->render($view, array(
                'formation' => $formation
             ));
         }
@@ -177,6 +181,19 @@ class FormationController extends AbstractController
         return $this->redirectToRoute('formation');
     }
 
+    /**
+     * @param Formation $formation
+     * @return \Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse
+     * @Route("/pdf/{id}", name="formation.fiche.pdf")
+     */
+    public function pdfFormationFiche(Formation $formation) {
+        $htmlView = $this->render('formation/formation_fiche.html.twig',array(
+            'formation'=>$formation
+        ));
+        $fileName = $formation->getDesignation().'.pdf';
+        $pdf = $this->helperService->generatePdf($htmlView, $fileName);
+        return new Response('<html><body>Pdf generated with success</body></html>');
+    }
 
 
 }

@@ -23,7 +23,7 @@ class UserFixture extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager)
     {
          $user = new User();
-         $user->setEmail('aymen.sellaouti@gmail.com');
+         $user->setEmail('student@gmail.com');
          $user->setPassword(
              $this->passwordEncoder->encodePassword(
                  $user,
@@ -31,13 +31,16 @@ class UserFixture extends Fixture implements FixtureGroupInterface
              )
          );
          $user2 = new User();
-         $user2->setEmail('admin@gmail.com');
+         $user2->setEmail('admin@admin.com');
          $user2->setPassword(
              $this->passwordEncoder->encodePassword(
                  $user2,
                  'secret'
              )
-         );
+         )
+         ->setRoles(['ROLE_ADMIN'])
+         ;
+
          $manager->persist($user);
          $manager->persist($user2);
 

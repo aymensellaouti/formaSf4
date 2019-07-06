@@ -1,0 +1,76 @@
+{% extends 'pdf_layout.html.twig' %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        <!-- gallery and tabs column -->
+
+        <div class="col-md-8">
+
+            <div class="zoom-gallery row">
+
+
+
+                <div class="col-md-10">
+                    <img src="{{ absolute_url(asset('uploads/formations/'~formation.image)) }}"
+                         class="img-fluid"
+                         data-image="">
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- product name and add to cart -->
+
+        <div class="col-md-4">
+            <h1 class="product-heading" data-name="">{{ formation.description }}</h1>
+
+            <!-- product attributes -->
+            <ul class="list-unstyled text-muted">
+                <li>Topics :
+                    {% for topic in formation.topics %}
+                        <span>{{ topic }}</span>
+                    {% endfor %}
+                </li>
+            </ul>
+
+            <div class="old-price">
+                <span class="currency" data-currency="">Début</span> <span data-price="">{{ formation.startDate|date("m/d/Y") }}</span>
+            </div>
+
+            <div class="price h3">
+                <span class="currency" data-currency="">Fin : </span> <span data-price="">{{ formation.endDate|date("m/d/Y") }}</span>
+            </div>
+
+            <hr>
+
+
+            <button type="button" class="btn btn-outline-secondary btn-block  btn-icon">
+                <i class="la la-shopping-cart"></i> Inscription
+            </button>
+
+
+            <div class="btn-group mt-3" role="group">
+
+                <button type="button" class="btn  btn-link text-black-50 btn-sm" title="Wishlist">
+                    <i class="la la-heart"></i> Wishlist
+                </button>
+
+                <button type="button" class="btn  btn-link text-black-50 btn-sm" title="Compare">
+                    <i class="la la-exchange"></i> Compare
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
