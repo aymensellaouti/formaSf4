@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Evaluation;
 use App\Entity\Formation;
+use App\Entity\User;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;
 use App\Service\HelperService;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -22,10 +25,15 @@ class FormationController extends AbstractController
 {
 
     private $helperService;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
-    public function __construct(HelperService $helperService)
+    public function __construct(HelperService $helperService, EntityManagerInterface $entityManager)
     {
         $this->helperService = $helperService;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -195,5 +203,52 @@ class FormationController extends AbstractController
         return new Response('<html><body>Pdf generated with success</body></html>');
     }
 
+    /**
+     * @Route("/subscribe", name="exposed", methods={"POST"})
+     *
+     */
+    public function getRandomHeartNumber() {
+        return $this->json([
+            'heart' => rand(0,1000000)
+        ]);
+    }
+
+    /**
+     * @Route("/evaluate/{id}", name="formation.evaluate")
+     */
+    public function wishlist(Request $request, Formation $formation=null) {
+        /** @var User $user */
+        $user = $this->getUser();
+        $description = $request->get('description');
+        $note = $request->get('note');
+
+        if(!$formation || !$user) {
+            $content = json_encode(array('message' => 'You are not allowed to delete this post'));
+            return new Response($content, 419);
+        }
+        else {
+            if(! in_array('ROLE_STUDENT', $user->getRoles())) {
+                $content = json_encode(array('message' => 'only students can evaluate trainings'));
+                return new Response($content, 419);
+            }
+        }
+        $evaluation = new Evaluation();
+        $evaluation->setDate(new \DateTime());
+        $evaluation->setDescription($description);
+        $evaluation->setFormation($formation);
+        $evaluation->setUser($user);
+        $this->entityManager->persist($evaluation);
+        $this->entityManager->flush();
+        $datas = [];
+        foreach ($formation->getEvaluations() as $evaluationItem) {
+            $row = [
+                'date' => $evaluationItem->getDate()->format('Y-m-d'),
+                'username' => $evaluationItem->getUser()->getUsername(),
+                'description' => $evaluationItem->getDescription()
+            ];
+            $datas[] = $row;
+        }
+        return $this->json($datas);
+    }
 
 }

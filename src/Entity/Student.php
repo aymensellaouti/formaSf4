@@ -33,10 +33,6 @@ class Student
      */
     private $etablissement;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Evaluation", mappedBy="etudiant")
-     */
-    private $evaluations;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Formation", mappedBy="students")
@@ -45,7 +41,6 @@ class Student
 
     public function __construct()
     {
-        $this->evaluations = new ArrayCollection();
         $this->formations = new ArrayCollection();
     }
 
@@ -86,37 +81,6 @@ class Student
     public function setEtablissement(string $etablissement): self
     {
         $this->etablissement = $etablissement;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Evaluation[]
-     */
-    public function getEvaluations(): Collection
-    {
-        return $this->evaluations;
-    }
-
-    public function addEvaluation(Evaluation $evaluation): self
-    {
-        if (!$this->evaluations->contains($evaluation)) {
-            $this->evaluations[] = $evaluation;
-            $evaluation->setEtudiant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvaluation(Evaluation $evaluation): self
-    {
-        if ($this->evaluations->contains($evaluation)) {
-            $this->evaluations->removeElement($evaluation);
-            // set the owning side to null (unless already changed)
-            if ($evaluation->getEtudiant() === $this) {
-                $evaluation->setEtudiant(null);
-            }
-        }
 
         return $this;
     }

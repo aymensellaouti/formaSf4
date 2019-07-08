@@ -262,4 +262,13 @@ class Formation
     {
         return $this->getDesignation();
     }
+
+    public function isEvaluatedByUser(User $user) {
+       foreach ($this->getEvaluations() as $eval) {
+           if ($eval->getUser() == $user){
+               return true ;
+           }
+        }
+       return false;
+    }
 }

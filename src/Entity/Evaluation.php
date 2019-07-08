@@ -33,10 +33,9 @@ class Evaluation
     private $formation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="evaluations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="evaluations")
      */
-    private $etudiant;
+    private $user;
 
     public function getId(): ?int
     {
@@ -79,15 +78,16 @@ class Evaluation
         return $this;
     }
 
-    public function getEtudiant(): ?Student
+    public function getUser(): ?User
     {
-        return $this->etudiant;
+        return $this->user;
     }
 
-    public function setEtudiant(?Student $etudiant): self
+    public function setUser(?User $user): self
     {
-        $this->etudiant = $etudiant;
+        $this->user = $user;
 
         return $this;
     }
+
 }

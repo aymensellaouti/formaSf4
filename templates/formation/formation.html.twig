@@ -47,9 +47,44 @@
             <hr>
 
 
-            <button type="button" class="btn btn-outline-secondary btn-block  btn-icon">
-                <i class="la la-shopping-cart"></i> Inscription
+            {% if app.user  %}
+            <button type="button"
+                    class="btn btn-outline-secondary btn-block  btn-icon"
+                    {% if formation.isEvaluatedByUser(app.user) %}
+                        disabled
+                    {% endif %}
+                    id="evalPath"
+                    data-toggle="modal"
+                    data-target="#evaluateModal"
+                    data-path = {{ path('formation.evaluate', {'id': formation.id}) }}
+            >
+                <i class="la la-shopping-cart"></i> Evaluate
             </button>
+            {% endif %}
+            <!-- Modal -->
+            <div class="modal fade" id="evaluateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Evaluer</h5>
+                            <button type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Veuillez donner une note entre 1 et 5 <input id="note" type="number" min="1" max="5" class="form-control">
+                            Donnez votre avis sur la formation : <textarea id="description" class="form-control"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="saveChanges" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <div class="btn-group mt-3" role="group">
@@ -74,7 +109,7 @@
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-expanded="true">Description</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-expanded="false">Evaluations</a>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#evaluation" role="tab" aria-controls="profile" aria-expanded="false">Evaluations</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -83,11 +118,12 @@
                         {{ formation.description }}
                     </p>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" aria-expanded="false">
+                <div class="tab-pane fade" id="evaluation" role="tabpanel" aria-labelledby="profile-tab" aria-expanded="false">
                     {% for evaluation in formation.evaluations %}
-                    <p>
-
-                    </p>
+                    <div class="alert alert-info">
+                        {{ evaluation.date|date('Y:m:d') }} / {{ evaluation.user.student.name }} :
+                        {{ evaluation.description }}
+                    </div>
                     {% else %}
                     <p>
                         Cette formation n'a pas été évaluée.
@@ -98,4 +134,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('evaluate') }}
 {% endblock %}
