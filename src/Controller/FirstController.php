@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Formation;
+use App\Repository\TopicRepository;
 use App\Service\HelperService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,8 +20,11 @@ class FirstController extends AbstractController
         ]);
     }
 
-    public function header() {
-       return $this->render('header.html.twig');
+    public function header(TopicRepository $topicRepository) {
+       $topics= $topicRepository->findAll();
+       return $this->render('header.html.twig', [
+        'topics' => $topics
+       ]);
     }
 
     /**

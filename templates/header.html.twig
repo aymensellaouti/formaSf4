@@ -65,7 +65,7 @@
                     <input type="text" class="form-control default-font-size" placeholder="Search product" aria-label="Search product">
 
                     <select class="custom-select input-group-append form-control-lg no-border-x default-font-size">
-                        <option selected="">All categories</option>
+                        <option selected="">Training Topics</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
@@ -142,24 +142,33 @@
 
             {#                    </div>#}
             {#                </div>#}
-
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <div class="float-right" id="mini-user" data-component-user>
+                <i class="la la-user d-inline-block" style="font-size:42px"></i>&ensp;
+                <span class="font-weight-bold"><a href="{{ path('logout') }}">Logout</a></span>
+            </div>
+            {% else %}
             <div class="dropdown float-right" id="mini-user" data-component-user>
                 <a class="btn btn-link dropdown-toggle bg-faded p-0 chevron-big" href="https://example.com" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="la la-user d-inline-block" style="font-size:42px"></i>&ensp;
 
                     <div class="d-inline-block text-dark" data-if="login">
-                        <span class="small d-block text-left">My account</span>
-                        <span class="font-weight-bold">Login/Register</span>
+                        <span class="small d-block text-left">
+                            My account
+                        </span>
+
+                            <span class="font-weight-bold">Login/Register</span>
+
                     </div>
 
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">Register</a>
-                    <a class="dropdown-item" href="#">Login</a>
+                    <a class="dropdown-item" href="{{ path('app_login') }}">Login</a>
                 </div>
             </div>
-
+            {% endif %}
         </div>
 
     </div>
@@ -175,11 +184,11 @@
             <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item dropdown categories-dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="la la-bars"></i>&ensp;Categories <i class="la la-angle-down float-right"></i></a>
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="la la-bars"></i>&ensp;Training Topics <i class="la la-angle-down float-right"></i></a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="#"><i class="la la-desktop"></i> Desktops</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        {% for topic in topics %}
+                            <a class="dropdown-item" href="#">{{ topic.designation }}</a>
+                        {% endfor %}
                     </div>
                 </li>
 
