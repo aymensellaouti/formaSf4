@@ -204,16 +204,6 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/subscribe", name="exposed", methods={"POST"})
-     *
-     */
-    public function getRandomHeartNumber() {
-        return $this->json([
-            'heart' => rand(0,1000000)
-        ]);
-    }
-
-    /**
      * @Route("/evaluate/{id}", name="formation.evaluate")
      */
     public function wishlist(Request $request, Formation $formation=null) {
@@ -222,14 +212,18 @@ class FormationController extends AbstractController
         $description = $request->get('description');
         $note = $request->get('note');
 
+        if($note > 5 || $note<1) {
+            $content = json_encode('La note doit etre entre 1 et 5');
+            return new Response($content, 401);
+        }
         if(!$formation || !$user) {
-            $content = json_encode(array('message' => 'You are not allowed to delete this post'));
-            return new Response($content, 419);
+            $content = json_encode('You are not allowed to delete this post');
+            return new Response($content, 401);
         }
         else {
             if(! in_array('ROLE_STUDENT', $user->getRoles())) {
-                $content = json_encode(array('message' => 'only students can evaluate trainings'));
-                return new Response($content, 419);
+                $content = json_encode('only students can evaluate trainings');
+                return new Response($content, 401);
             }
         }
         $evaluation = new Evaluation();
