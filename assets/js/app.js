@@ -15,7 +15,7 @@ import $ from 'jquery';
 // const $ = require('jquery');
 import 'bootstrap';
 
-import './main';
+// import './main';
 // import './carroussel';
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 

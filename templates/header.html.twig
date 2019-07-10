@@ -64,13 +64,6 @@
                 <div class="input-group input-group-lg mb-3" id="search-box" data-component-category>
                     <input type="text" class="form-control default-font-size" placeholder="Search product" aria-label="Search product">
 
-                    <select class="custom-select input-group-append form-control-lg no-border-x default-font-size">
-                        <option selected="">Training Topics</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="button"><i class="la la-search"></i></button>
                     </div>
@@ -164,7 +157,7 @@
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">Register</a>
+                    <a class="dropdown-item" href="{{ path('student.register') }}">Register</a>
                     <a class="dropdown-item" href="{{ path('app_login') }}">Login</a>
                 </div>
             </div>
@@ -195,30 +188,17 @@
 
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('formation') }}">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ path('home') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
 
 
-                <li class="nav-item dropdown dropdown--canvas dropdown--canvas--left dropdown--canvas--sm">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item ">
+                    <a class="nav-link" href="#">
                         Store Location
                     </a>
-                    <div class="dropdown-menu">
-                        Hello!
-                    </div>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Delivery Services</a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Blog</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Support</a>
-                </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About Us</a>

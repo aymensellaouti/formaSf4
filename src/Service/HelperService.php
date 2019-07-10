@@ -62,6 +62,12 @@ class HelperService
             );
     }
 
+    /**
+     * @param $to
+     * @param $template
+     * @param string $contentType
+     * @param null $attachement
+     */
     public function sendEmail($to, $template, $contentType='text/html', $attachement = null) {
         $message = (new \Swift_Message('Hello Email'))
             ->setFrom('aymn.noreply@gmail.com')
