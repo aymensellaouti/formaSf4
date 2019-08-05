@@ -1,5 +1,17 @@
 easy_admin:
     entities:
         # List the entity class name you want to manage
-        - App\Entity\Formateur
-        - App\Entity\Topic
+        Formateur:
+            class: App\Entity\Formateur
+        Topic:
+            class: App\Entity\Topic
+        Student:
+            class: App\Entity\Student
+        User:
+            class: App\Entity\User
+            form:
+                fields:
+                    - 'email'
+                    - 'password'
+                    - {property: 'student', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Student' }}
+                    - 'formateur'
